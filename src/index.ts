@@ -1,12 +1,17 @@
-import { checkAllOnce, type MonitorTarget } from "./monitor.js";
+// load .env first!!! otherwise supabase keys are undefined and nothing saves
+import "dotenv/config";
 
+import { checkAllOnce, type MonitorTarget } from "./monitor.js";
+import { insertPingLogs } from "./db/pingLogs.js";
+
+// TODO later: read this list from a json file or something
 const urls = ["https://example.com", "https://www.google.com"];
 
 const targets: MonitorTarget[] = urls.map((url) => {
   return {
     url,
     method: "GET",
-    timeoutMs: 10_000
+    timeoutMs: 10000
   };
 });
 
@@ -20,3 +25,16 @@ for (let i = 0; i < results.length; i++) {
   console.log(okText, `${r.latencyMs}ms`, statusText, r.url + errorText);
 }
 
+// supabase part
+try {
+  const dbResult = await insertPingLogs(results);
+  if (!dbResult.skipped) {
+    console.log(`Inserted ${dbResult.inserted} rows into ping_logs.`);
+  } else {
+    console.log(
+      "Skipping DB insert (need SUPABASE_URL and SUPABASE_SECRET_KEY, or legacy SUPABASE_SERVICE_ROLE_KEY)."
+    );
+  }
+} catch (e) {
+  console.log("DB insert failed:", e);
+}

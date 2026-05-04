@@ -1,16 +1,20 @@
-# SLA Uptime & Latency Monitor
+# SLA uptime thing
 
-Core logic for an uptime + latency worker: send HTTP requests to a list of targets, measure response time, and report results.
+School project idea: ping some URLs, see how fast they answer, save results in supabase.
 
-## Run locally
+## how to run it
 
 ```bash
 npm install
-npm run dev
+npm run build
+npm start
 ```
 
-## Core API
+`npm run dev` also works if you want to edit ts files without building every time.
 
-- `checkOnce(target)`: check a single URL and return `{ ok, status, latencyMs, error? }`
-- `checkAllOnce(targets, { concurrency })`: check many URLs with a concurrency limit
+You need a `.env` file with supabase stuff (copy from `.env.example`). dont put real keys in github only in `.env` on your laptop.
 
+## whats in the code
+
+- `src/monitor.ts` — `checkOnce` hits one url, `checkAllOnce` does a list
+- `src/db/` — writes rows to `ping_logs` if env vars are set

@@ -1,4 +1,5 @@
 {
+  // compiles everything in src/ into the dist/ folder
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["ES2022"],

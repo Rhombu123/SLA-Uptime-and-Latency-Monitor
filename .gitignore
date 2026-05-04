@@ -1,0 +1,19 @@
+# --- secrets (never push these) ---
+.env
+.env.local
+.env.*.local
+
+# we are NOT ignoring .env.example on purpose
+# that file is just fake placeholders so your teammates know what vars exist
+# put real keys in .env only
+
+# --- node stuff ---
+node_modules/
+
+# --- build output ---
+dist/
+
+# --- random os / editor junk ---
+.DS_Store
+*.log
+Thumbs.db
